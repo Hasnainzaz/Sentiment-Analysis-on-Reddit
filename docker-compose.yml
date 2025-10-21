@@ -1,0 +1,29 @@
+```yaml
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    restart: unless-stopped
+```
+
+Notes: inside `.env` we include Reddit credentials and optionally `BACKEND_URL` for local development. When running with Docker Compose, Streamlit can reach the backend at `http://backend:8000` (the code already uses `http://backend:8000` by default).
+
+---
